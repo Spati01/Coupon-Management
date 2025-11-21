@@ -309,3 +309,51 @@ Creating a coupon with an existing `code` returns HTTP 409 Conflict.
 
 
 
+# Approach:
+**Project Structure & Design**
+Followed a clean layered architecture using Spring Boot:
+controller → Handles REST API requests.
+service → Contains business logic for coupon evaluation and creation.
+repository → Stores coupons and demo user in-memory (no database required).
+model → Contains domain models (Coupon, Eligibility, User, Cart, CartItem).
+dto → Defines request/response objects for APIs.
+config → Loads test coupons and hard-coded demo user at application startup.
+Code structured to be modular, readable, and maintainable.
+
+**Coupon Creation:**
+Implemented POST /api/coupons/create API.
+Supports all eligibility rules:
+User tiers, first order only, min lifetime spend, min orders.
+Cart-based rules: min cart value, applicable/excluded categories, min items.
+Ensures unique coupon codes; duplicates are rejected with proper error response.
+
+**Best Coupon Evaluation:**
+Implemented POST /api/coupons/find-best API.
+
+**Steps followed:**
+Filter coupons by validity dates and per-user usage limits.
+Validate all eligibility rules against given user + cart input.
+Calculate discount:
+FLAT → Fixed amount.
+PERCENT → Percentage of cart value, capped by maxDiscountAmount.
+Select best coupon using deterministic rules:
+Highest discount → Earliest expiry → Lexicographically smallest code.
+Returns either the best coupon with discount or null if no coupon applies.
+
+**Demo User Requirement:**
+Created a hard-coded demo user in memory:
+Email: hire-me@anshumat.org
+Password: HireMe@2025!
+Ensures reviewers can test the application without registration.
+Seeded in DataLoader alongside test coupons.
+
+**In-Memory Storage:**
+Used ConcurrentHashMap for coupons and users to simplify storage.
+Avoided database setup since persistence was optional.
+Ensures quick testing and reproducibility.
+Error Handling
+Invalid inputs are handled with clear messages.
+Duplicate coupon creation returns HTTP 409 Conflict.
+
+
+
