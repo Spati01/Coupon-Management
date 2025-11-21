@@ -4,7 +4,9 @@ package com.example.coupon.config;
 
 import com.example.coupon.model.*;
 import com.example.coupon.model.enums.DiscountType;
+import com.example.coupon.model.enums.Role;
 import com.example.coupon.repository.CouponRepository;
+import com.example.coupon.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +18,18 @@ import java.util.*;
 public class DataLoader implements CommandLineRunner {
 
     private final CouponRepository repo;
+    private final UserRepository userRepository;
 
-    public DataLoader(CouponRepository repo) {
+    public DataLoader(CouponRepository repo, UserRepository userRepository) {
         this.repo = repo;
+        this.userRepository = userRepository;
     }
 
     @Override
         public void run(String... args) {
             loadTestCoupons();
-            System.out.println("✔ Test Coupons Loaded Successfully!");
+            loadDemoUser();
+        System.out.println("Test Coupons and Demo User Loaded Successfully!");
         }
 
         private void loadTestCoupons() {
@@ -82,6 +87,25 @@ public class DataLoader implements CommandLineRunner {
             System.out.println("4 Coupons successfully inserted in memory database!");
 
 
+    }
+
+
+
+
+    // Seed Demo User
+
+    private void loadDemoUser() {
+        String email = "hire-me@anshumat.org";
+        if (!userRepository.existsByEmail(email)) {
+            User demoUser = new User();
+            demoUser.setEmail(email);
+            demoUser.setPassword("HireMe@2025!"); // plain text for demo
+            demoUser.setRole(Role.ADMIN); // or "USER" as per your design
+            userRepository.save(demoUser);
+            System.out.println("Demo user created successfully!");
+        } else {
+            System.out.println("Demo user already exists!");
+        }
     }
 }
 
