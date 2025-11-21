@@ -99,8 +99,8 @@ public class DataLoader implements CommandLineRunner {
         if (!userRepository.existsByEmail(email)) {
             User demoUser = new User();
             demoUser.setEmail(email);
-            demoUser.setPassword("HireMe@2025!"); // plain text for demo
-            demoUser.setRole(Role.ADMIN); // or "USER" as per your design
+            demoUser.setPassword("HireMe@2025!");
+            demoUser.setRole(Role.ADMIN);
             userRepository.save(demoUser);
             System.out.println("Demo user created successfully!");
         } else {
