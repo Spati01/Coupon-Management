@@ -62,7 +62,7 @@ public class DataLoader implements CommandLineRunner {
             c2.setEndDate(LocalDateTime.now().plusMonths(12));
 
             Eligibility e2 = new Eligibility();
-            e2.setMinCartValue(BigDecimal.valueOf(500)); // 👈 IMPORTANT RULE
+            e2.setMinCartValue(BigDecimal.valueOf(500));
 
             c2.setEligibility(e2);
             c2.setUsageByUser(new HashMap<>());
