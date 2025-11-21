@@ -310,7 +310,7 @@ Creating a coupon with an existing `code` returns HTTP 409 Conflict.
 
 
 # Approach:
-**Project Structure & Design**
+**1. Project Structure & Design**
 Followed a clean layered architecture using Spring Boot:
 controller → Handles REST API requests.
 service → Contains business logic for coupon evaluation and creation.
@@ -320,17 +320,17 @@ dto → Defines request/response objects for APIs.
 config → Loads test coupons and hard-coded demo user at application startup.
 Code structured to be modular, readable, and maintainable.
 
-**Coupon Creation:**
+**2. Coupon Creation:**
 Implemented POST /api/coupons/create API.
 Supports all eligibility rules:
 User tiers, first order only, min lifetime spend, min orders.
 Cart-based rules: min cart value, applicable/excluded categories, min items.
 Ensures unique coupon codes; duplicates are rejected with proper error response.
 
-**Best Coupon Evaluation:**
+**3. Best Coupon Evaluation:**
 Implemented POST /api/coupons/find-best API.
 
-**Steps followed:**
+**4. Steps followed:**
 Filter coupons by validity dates and per-user usage limits.
 Validate all eligibility rules against given user + cart input.
 Calculate discount:
@@ -340,14 +340,14 @@ Select best coupon using deterministic rules:
 Highest discount → Earliest expiry → Lexicographically smallest code.
 Returns either the best coupon with discount or null if no coupon applies.
 
-**Demo User Requirement:**
+**5. Demo User Requirement:**
 Created a hard-coded demo user in memory:
 Email: hire-me@anshumat.org
 Password: HireMe@2025!
 Ensures reviewers can test the application without registration.
 Seeded in DataLoader alongside test coupons.
 
-**In-Memory Storage:**
+**6. In-Memory Storage:**
 Used ConcurrentHashMap for coupons and users to simplify storage.
 Avoided database setup since persistence was optional.
 Ensures quick testing and reproducibility.
