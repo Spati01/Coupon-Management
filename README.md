@@ -304,5 +304,8 @@ Creating a coupon with an existing `code` returns HTTP 409 Conflict.
     "message": "No coupons available for this user/cart"
 }
 
+## Demo Login (Hard-Coded Seed User)
+**To allow reviewers to test the application without registration, the following demo user exists in the seeded data:**
+
 
 
